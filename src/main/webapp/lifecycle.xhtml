@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+
+<h:head>
+  <title>JSF ライフサイクル学習</title>
+  <link rel="stylesheet" type="text/css" href="#{request.contextPath}/lifecycle.css" />
+</h:head>
+
+<h:body>
+  <h1>JSF ライフサイクル学習サンプル</h1>
+
+  <div class="lifecycle-box">
+    <h2>JSFライフサイクルの6つのフェーズ</h2>
+    <ol>
+      <li><strong>Restore View（ビュー復元）</strong> - 既存のビューがあれば復元、なければ新規作成</li>
+      <li><strong>Apply Request Values（リクエスト値の適用）</strong> - HTTPパラメータが各UIComponentに適用</li>
+      <li><strong>Process Validations（検証）</strong> - コンバータやバリデータが動作</li>
+      <li><strong>Update Model Values（モデル更新）</strong> - バリデーション通過後、Beanのプロパティに書き込み</li>
+      <li><strong>Invoke Application（アプリケーション呼び出し）</strong> - ビジネスロジックやナビゲーション実行</li>
+      <li><strong>Render Response（レスポンスレンダリング）</strong> - HTMLを生成してクライアントへ返す</li>
+    </ol>
+  </div>
+
+  <h:form id="lifecycleForm">
+    <div class="form-section">
+      <h2>フォーム入力</h2>
+      
+      <p>
+        <label>ユーザー名（必須）:</label><br/>
+        <h:inputText id="userName" 
+                     value="#{lifecycleBean.userForm.userName}" 
+                     required="true"
+                     requiredMessage="ユーザー名は必須です" />
+        <h:message for="userName" style="color:red" />
+      </p>
+
+      <p>
+        <label>年齢（0-150）:</label><br/>
+        <h:inputText id="age" 
+                     value="#{lifecycleBean.userForm.age}"
+                     converter="jakarta.faces.Integer" />
+        <h:message for="age" style="color:red" />
+        <br/>
+        <small>※ バリデーション: 0から150の間で入力してください</small>
+      </p>
+
+      <p>
+        <label>メールアドレス:</label><br/>
+        <h:inputText id="email" 
+                     value="#{lifecycleBean.userForm.email}" />
+        <h:message for="email" style="color:red" />
+        <br/>
+        <small>※ バリデーション: @を含む必要があります</small>
+      </p>
+
+      <p>
+        <h:commandButton value="送信" 
+                        action="#{lifecycleBean.submit}"
+                        onclick="return confirm('送信しますか？これでライフサイクルが実行されます。');" />
+        <h:commandButton value="クリア" 
+                        action="#{lifecycleBean.clear}"
+                        immediate="true" />
+      </p>
+    </div>
+
+    <div class="result-section" rendered="#{lifecycleBean.result != null}">
+      <h2>結果</h2>
+      <h:outputText value="#{lifecycleBean.result}" style="font-size: 1.2em; color: #1976D2;" />
+    </div>
+
+    <div class="lifecycle-box" rendered="#{not empty lifecycleBean.lifecycleLog}">
+      <h2>ライフサイクル実行ログ</h2>
+      <div class="phase-title">1. Restore View（ビュー復元）</div>
+      <div class="log-entry">✓ ビューが復元されました（初回アクセス時は新規作成）</div>
+      
+      <div class="phase-title">2. Apply Request Values（リクエスト値の適用）</div>
+      <div class="log-entry">✓ HTTPパラメータがUIComponentに適用されました</div>
+      
+      <div class="phase-title">3. Process Validations（検証）</div>
+      <div class="log-entry">
+        ✓ コンバータとバリデータが実行されました
+        <br/>
+        <small>※ 年齢: Integer型への変換と0-150の範囲チェック</small>
+        <br/>
+        <small>※ メール: @を含むかチェック</small>
+      </div>
+      <h:messages globalOnly="false" style="color:red; margin: 10px 0;" />
+      
+      <div class="phase-title">4. Update Model Values（モデル更新）</div>
+      <div class="log-entry">✓ バリデーション通過後、Beanのプロパティに値が設定されました</div>
+      
+      <div class="phase-title">5. Invoke Application（アプリケーション呼び出し）</div>
+      <div class="log-entry">✓ submit()メソッドが実行されました</div>
+      
+      <div class="phase-title">6. Render Response（レスポンスレンダリング）</div>
+      <div class="log-entry">✓ HTMLが生成され、クライアントに送信されました</div>
+      
+      <h3>詳細ログ</h3>
+      <h:dataTable value="#{lifecycleBean.lifecycleLog}" var="log" 
+                   styleClass="log-table">
+        <h:column>
+          <h:outputText value="#{log}" 
+                       styleClass="#{log.contains('✗') ? 'error-log' : 'log-entry'}" />
+        </h:column>
+      </h:dataTable>
+    </div>
+  </h:form>
+
+  <div style="margin-top: 30px; padding: 15px; background-color: #fff3cd; border-radius: 5px;">
+    <h3>学習のポイント</h3>
+    <ul>
+      <li><strong>初回アクセス時:</strong> Restore Viewで新規ビューが作成されます</li>
+      <li><strong>フォーム送信時:</strong> すべてのフェーズが順番に実行されます</li>
+      <li><strong>バリデーションエラー時:</strong> Process Validationsでエラーが検出され、Render Responseまでスキップされます</li>
+      <li><strong>immediate="true":</strong> 一部のフェーズをスキップして実行できます</li>
+    </ul>
+  </div>
+
+</h:body>
+</html>
+

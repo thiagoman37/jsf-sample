@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html">
+
+<h:head>
+  <title>JSF Sample</title>
+</h:head>
+
+<h:body>
+  <h:form>
+  <!--  <h:outputText value="Hello JSF!" /> -->
+    <h:outputText value="#{helloBean.message}" />
+  </h:form>
+
+  <h:form>
+
+    名前：
+    <h:inputText value="#{userBean.name}" required="true" />
+    <h:message for="name" style="color:red" />
+
+    <br/><br/>
+
+    <h:commandButton value="送信" action="#{userBean.submit}" />
+
+    <br/><br/>
+
+    <h:outputText value="#{userBean.result}" />
+
+  </h:form>
+
+  <hr/>
+  <h3>学習用ページ</h3>
+  <p>
+    <a href="lifecycle.xhtml">JSFライフサイクル学習ページ</a>
+  </p>
+
+</h:body>
+</html>

@@ -1,0 +1,37 @@
+.lifecycle-box {
+  border: 2px solid #4CAF50;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: #f1f8f4;
+  border-radius: 5px;
+}
+.phase-title {
+  font-weight: bold;
+  color: #2E7D32;
+  font-size: 1.1em;
+  margin-top: 10px;
+}
+.log-entry {
+  margin: 5px 0;
+  padding: 5px;
+  background-color: white;
+  border-left: 3px solid #4CAF50;
+  padding-left: 10px;
+}
+.error-log {
+  border-left-color: #f44336;
+  color: #c62828;
+}
+.form-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 20px 0;
+}
+.result-section {
+  background-color: #e3f2fd;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
