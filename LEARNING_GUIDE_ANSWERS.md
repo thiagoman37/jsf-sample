@@ -29,6 +29,8 @@ public class LifecycleBean {
 
 2. **依存性注入（DI）の対象にする**
    - 他のクラスから`@Inject`で注入できるようになります
+   - 例：別のクラスで`@Inject LifecycleBean lifecycleBean;`と書くと、CDIコンテナが自動的にインスタンスを注入します
+   - `@Named`がないと、CDIコンテナがこのクラスを管理対象として認識しないため、注入できません
 
 3. **JSFの管理Beanとして登録する**
    - JSFがこのクラスのインスタンスを管理し、適切なタイミングで作成・破棄します
